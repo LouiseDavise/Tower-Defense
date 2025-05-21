@@ -67,17 +67,19 @@ void LeaderBoardScene::LoadLeaderboard()
     while (std::getline(file, line))
     {
         std::stringstream ss(line);
-        std::string uid, name, scoreStr, time;
+        std::string uid, name, scoreStr, time, date;
         std::getline(ss, uid, ',');
         std::getline(ss, name, ',');
         std::getline(ss, scoreStr, ',');
         std::getline(ss, time, ',');
+        std::getline(ss, date, ',');
 
         LeaderboardEntry entry;
         entry.uid = uid;
         entry.name = name;
         entry.score = std::stoi(scoreStr);
         entry.time = time;
+        entry.date = date;
         leaderboard.push_back(entry);
     }
     file.close();
@@ -119,9 +121,10 @@ void LeaderBoardScene::RenderPage()
     float box_y = h / 8 - 30;
     float box_width = w - 100;
     float col_rank = box_x + 60;
-    float col_name = box_x + box_width / 3 + 20;
-    float col_score = box_x + (box_width / 3) * 2 - 20;
-    float col_time = box_x + box_width - 90;
+    float col_name = box_x + box_width * 0.22;
+    float col_score = box_x + box_width * 0.48;
+    float col_time = box_x + box_width * 0.68;
+    float col_date = box_x + box_width * 0.85;
 
     int start = currentPage * entriesPerPage;
     int end = std::min(start + entriesPerPage, (int)leaderboard.size());
@@ -150,6 +153,11 @@ void LeaderBoardScene::RenderPage()
                                             std::get<0>(color), std::get<1>(color), std::get<2>(color), 255, 0.5, 0.5);
         AddNewObject(timeLabel);
         pageLabels.push_back(timeLabel);
+
+        auto *dateLabel = new Engine::Label(leaderboard[i].date, "pirulen.ttf", 24, col_date, row_y,
+                                            std::get<0>(color), std::get<1>(color), std::get<2>(color), 255, 0.5, 0.5);
+        AddNewObject(dateLabel);
+        pageLabels.push_back(dateLabel);
     }
 }
 

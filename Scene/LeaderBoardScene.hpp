@@ -14,6 +14,7 @@ struct LeaderboardEntry
     std::string name;
     int score;
     std::string time;
+    std::string date;
 };
 
 class LeaderBoardScene final : public Engine::IScene

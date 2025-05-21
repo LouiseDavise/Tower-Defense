@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <filesystem>
+#include <ctime>
 
 #include "Engine/AudioHelper.hpp"
 #include "Engine/GameEngine.hpp"
@@ -14,7 +15,8 @@
 #include "UI/Component/Label.hpp"
 #include "WinScene.hpp"
 
-void WinScene::Initialize() {
+void WinScene::Initialize()
+{
     ticks = 0;
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
@@ -34,11 +36,19 @@ void WinScene::Initialize() {
     std::ofstream file("Data/scoreboard.txt", std::ios::app);
     std::cout << "Writing to: " << std::filesystem::absolute("Data/scoreboard.txt") << std::endl;
 
-    if (file.is_open()) {
-        file << player_uid << "," << nameInput << "," << score << "," << static_cast<int>(scene->matchTime) << "s\n";
+    if (file.is_open())
+    {
+        std::time_t now = std::time(nullptr);
+        char dateStr[11];
+        std::strftime(dateStr, sizeof(dateStr), "%Y-%m-%d", std::localtime(&now));
+
+        file << player_uid << "," << nameInput << "," << score << ","
+             << static_cast<int>(scene->matchTime) << "s" << "," << dateStr << "\n";
         file.close();
         std::cout << "Score saved to scoreboard.txt\n";
-    } else {
+    }
+    else
+    {
         std::cout << "Failed to write score to file.\n";
     }
 
@@ -48,37 +58,41 @@ void WinScene::Initialize() {
     AddNewControlObject(backBtn);
     AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 7 / 4, 0, 0, 0, 255, 0.5, 0.5));
 
-    Engine::ImageButton* nextBtn;
+    Engine::ImageButton *nextBtn;
     nextBtn = new Engine::ImageButton("win/dirt.png", "win/floor.png", halfW - 200, halfH * 7 / 4 - 170, 400, 100);
-    nextBtn->SetOnClickCallback([this]() {
+    nextBtn->SetOnClickCallback([this]()
+                                {
         PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("play"));
         if (scene && scene->MapId < 3) {
             scene->MapId++;
             Engine::GameEngine::GetInstance().ChangeScene("play");
         } else {
             Engine::GameEngine::GetInstance().ChangeScene("stage-select");
-        }
-    });
+        } });
     AddNewControlObject(nextBtn);
     AddNewObject(new Engine::Label("Next Stage", "pirulen.ttf", 36, halfW, halfH * 7 / 4 - 120, 0, 0, 0, 255, 0.5, 0.5));
 
     bgmId = AudioHelper::PlayAudio("win.wav");
 }
 
-void WinScene::Terminate() {
+void WinScene::Terminate()
+{
     IScene::Terminate();
     AudioHelper::StopBGM(bgmId);
 }
 
-void WinScene::Update(float deltaTime) {
+void WinScene::Update(float deltaTime)
+{
     ticks += deltaTime;
     if (ticks > 4 && ticks < 100 &&
-        dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetScene("play"))->MapId == 2) {
+        dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetScene("play"))->MapId == 2)
+    {
         ticks = 100;
         bgmId = AudioHelper::PlayBGM("happy.ogg");
     }
 }
 
-void WinScene::BackOnClick(int stage) {
+void WinScene::BackOnClick(int stage)
+{
     Engine::GameEngine::GetInstance().ChangeScene("stage-select");
 }
