@@ -91,7 +91,7 @@ public:
     std::vector<std::vector<int>> CalculateBFSDistance();
     // void ModifyReadMapTiles();
     void RemovePreviewIfMatched(Engine::IObject *obj);
-    bool CheckLandmineSpaceValid(int x, int y);
+    bool CheckBomSpaceValid(int x, int y);
     static TileType GetFloorTile() { return TILE_FLOOR; }
 };
 #endif // PLAYSCENE_HPP

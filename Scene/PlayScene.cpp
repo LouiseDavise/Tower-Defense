@@ -22,7 +22,7 @@
 #include "Engine/Resources.hpp"
 #include "Engine/Collider.hpp"
 #include "PlayScene.hpp"
-#include "Turret/Landmine.hpp"
+#include "Turret/Bom.hpp"
 #include "Turret/LaserTurret.hpp"
 #include "Turret/MachineGunTurret.hpp"
 #include "Turret/TurretButton.hpp"
@@ -255,14 +255,14 @@ void PlayScene::OnMouseMove(int mx, int my)
     imgTarget->Position.x = x * BlockSize;
     imgTarget->Position.y = y * BlockSize;
 }
-// bool PlayScene::CheckLandmineSpaceValid(int x, int y)
+// bool PlayScene::CheckBomSpaceValid(int x, int y)
 // {
 //     if (x < 0 || x >= MapWidth || y < 0 || y >= MapHeight)
 //         return false;
 //     return mapState[y][x] == TILE_FLOOR;
 // }
 
-bool PlayScene::CheckLandmineSpaceValid(int x, int y)
+bool PlayScene::CheckBomSpaceValid(int x, int y)
 {
     return x >= 0 && x < MapWidth && y >= 0 && y < MapHeight && mapState[y][x] == TILE_DIRT;
 }
@@ -293,16 +293,16 @@ void PlayScene::OnMouseUp(int button, int mx, int my)
         if (!preview)
             return;
 
-        // Reject placement if already occupied (for turret) or not walkable (for landmine)
+        // Reject placement if already occupied (for turret) or not walkable (for Bom)
         if ((dynamic_cast<Turret *>(preview) && mapState[y][x] == TILE_OCCUPIED) ||
-            (dynamic_cast<Landmine *>(preview) && !CheckLandmineSpaceValid(x, y)))
-        {
+            (dynamic_cast<Bom *>(preview) && !CheckBomSpaceValid(x, y)))
+            {
             return;
-        }
+            }
 
         // Check placement validity
         if ((dynamic_cast<Turret *>(preview) && !CheckSpaceValid(x, y)) ||
-            (dynamic_cast<Landmine *>(preview) && !CheckLandmineSpaceValid(x, y)))
+            (dynamic_cast<Bom *>(preview) && !CheckBomSpaceValid(x, y)))
         {
             Engine::Sprite *sprite;
             GroundEffectGroup->AddNewObject(sprite = new DirtyEffect("play/target-invalid.png", 1,
@@ -314,8 +314,8 @@ void PlayScene::OnMouseUp(int button, int mx, int my)
         // Purchase
         if (auto *turret = dynamic_cast<Turret *>(preview))
             EarnMoney(-turret->GetPrice());
-        else if (dynamic_cast<Landmine *>(preview))
-            EarnMoney(-Landmine::Cost);
+        else if (dynamic_cast<Bom *>(preview))
+            EarnMoney(-Bom::Cost);
 
         // Remove preview from UI
         if (preview->GetObjectIterator()->second == UIGroup)
@@ -358,7 +358,7 @@ void PlayScene::OnMouseUp(int button, int mx, int my)
             preview = nullptr;
             return;
         }
-        else if (auto *mine = dynamic_cast<Landmine *>(preview))
+        else if (auto *mine = dynamic_cast<Bom *>(preview))
         {
             mine->placed = true;
 
@@ -377,7 +377,7 @@ void PlayScene::OnMouseUp(int button, int mx, int my)
                 }
             }
 
-            // Remove landmine sprite immediately
+            // Remove Bom sprite immediately
             UIGroup->RemoveObject(preview->GetObjectIterator());
             preview = nullptr;
             return;
@@ -547,11 +547,11 @@ void PlayScene::ConstructUI()
     dangerIndicator->Tint.a = 0;
     UIGroup->AddNewObject(dangerIndicator);
 
-    // Landmine
+    // Bom
     btn = new TurretButton("play/floor.png", "play/dirt.png",
                            Engine::Sprite("play/tower-base.png", 1510, 136, 0, 0, 0, 0),
                            Engine::Sprite("play/landmine.png", 1515, 136 + 4, 0, 0, 0, 0),
-                           1510, 136, Landmine::Cost);
+                           1510, 136, Bom::Cost);
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 3));
     UIGroup->AddNewControlObject(btn);
 
@@ -559,7 +559,7 @@ void PlayScene::ConstructUI()
     btn = new TurretButton("play/floor.png", "play/dirt.png",
                            Engine::Sprite("play/tower-base.png", 1294, 216, 0, 0, 0, 0),
                            Engine::Sprite("play/shovel.png", 1294, 216 + 4, 0, 0, 0, 0),
-                           1294, 216, Landmine::Cost);
+                           1294, 216, Bom::Cost);
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 4));
     UIGroup->AddNewControlObject(btn);
 }
@@ -580,10 +580,10 @@ void PlayScene::UIBtnClicked(int id)
         preview = new LaserTurret(0, 0);
         selectedTurretId = id;
     }
-    // Handle landmine (ID 3)
-    else if (id == 3 && money >= Landmine::Cost)
+    // Handle Bom (ID 3)
+    else if (id == 3 && money >= Bom::Cost)
     {
-        preview = new Landmine(0, 0);
+        preview = new Bom(0, 0);
     }
     // Handle shovel ID4
     else if (id == 4)

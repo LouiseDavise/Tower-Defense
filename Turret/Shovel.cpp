@@ -15,7 +15,6 @@ Shovel::Shovel(float x, float y)
 void Shovel::Update(float deltaTime)
 {
     Sprite::Update(deltaTime);
-    // No other logic — shovel is passive until clicked
 }
 
 void Shovel::OnClick(int gridX, int gridY)

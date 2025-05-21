@@ -33,8 +33,8 @@ add_executable(2025_I2P2_TowerDefense
     Enemy/ExtremeTankEnemy.hpp
     Enemy/PlaneEnemy.cpp
     Enemy/PlaneEnemy.hpp
-    Turret/Landmine.cpp
-    Turret/Landmine.hpp
+    Turret/Bom.cpp
+    Turret/Bom.hpp
 
     Engine/Allegro5Exception.cpp
     Engine/Allegro5Exception.hpp
