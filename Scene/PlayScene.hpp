@@ -40,6 +40,7 @@ public:
     int enemiesKilled = 0;
     int coinsEarned = 0;
     float matchTime = 0.0f;
+    int selectedTurretId;
     static const std::vector<Engine::Point> directions;
     static const int MapWidth, MapHeight;
     static const int BlockSize;
@@ -91,5 +92,6 @@ public:
     // void ModifyReadMapTiles();
     void RemovePreviewIfMatched(Engine::IObject *obj);
     bool CheckLandmineSpaceValid(int x, int y);
+    static TileType GetFloorTile() { return TILE_FLOOR; }
 };
 #endif // PLAYSCENE_HPP

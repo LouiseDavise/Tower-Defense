@@ -8,7 +8,7 @@ const int Landmine::Cost = 60;
 
 Landmine::Landmine(float x, float y)
     : Sprite("play/landmine.png", x, y, 0, 0, 0, 0)
-{ // width = 32, height = 32
+{
     Anchor = Engine::Point(0.5, 0.5);
 }
 

@@ -31,6 +31,7 @@
 #include "UI/Component/Label.hpp"
 #include "player_data.h"
 #include "UI/Animation/ExplosionEffect.hpp"
+#include "Turret/Shovel.hpp"
 
 // TODO HACKATHON-4 (1/3): Trace how the game handles keyboard input.
 // TODO HACKATHON-4 (2/3): Find the cheat code sequence in this file.
@@ -275,6 +276,18 @@ void PlayScene::OnMouseUp(int button, int mx, int my)
     const int x = mx / BlockSize;
     const int y = my / BlockSize;
 
+    if (dynamic_cast<Shovel *>(preview))
+    {
+        int x = mx / BlockSize;
+        int y = my / BlockSize;
+        dynamic_cast<Shovel *>(preview)->OnClick(x, y);
+
+        // Exit shovel mode
+        UIGroup->RemoveObject(preview->GetObjectIterator());
+        preview = nullptr;
+        return;
+    }
+
     if (button & 1)
     {
         if (!preview)
@@ -320,10 +333,30 @@ void PlayScene::OnMouseUp(int button, int mx, int my)
         // Place into appropriate group
         if (auto *turret = dynamic_cast<Turret *>(preview))
         {
-            turret->Enabled = true;
-            turret->Preview = false;
-            TowerGroup->AddNewObject(preview);
-            mapState[y][x] = TILE_OCCUPIED;
+            int price = turret->GetPrice();
+            EarnMoney(-price);
+            UIGroup->RemoveObject(preview->GetObjectIterator());
+
+            Turret *finalTurret = nullptr;
+            switch (selectedTurretId)
+            {
+            case 0:
+                finalTurret = new MachineGunTurret(x * BlockSize + BlockSize / 2, y * BlockSize + BlockSize / 2);
+                break;
+            case 1:
+                finalTurret = new LaserTurret(x * BlockSize + BlockSize / 2, y * BlockSize + BlockSize / 2);
+                break;
+                // Add more turret types here if needed
+            }
+
+            if (finalTurret)
+            {
+                TowerGroup->AddNewObject(finalTurret);
+                mapState[y][x] = TILE_OCCUPIED;
+            }
+
+            preview = nullptr;
+            return;
         }
         else if (auto *mine = dynamic_cast<Landmine *>(preview))
         {
@@ -521,6 +554,14 @@ void PlayScene::ConstructUI()
                            1510, 136, Landmine::Cost);
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 3));
     UIGroup->AddNewControlObject(btn);
+
+    // SHovel
+    btn = new TurretButton("play/floor.png", "play/dirt.png",
+                           Engine::Sprite("play/tower-base.png", 1294, 216, 0, 0, 0, 0),
+                           Engine::Sprite("play/shovel.png", 1294, 216 + 4, 0, 0, 0, 0),
+                           1294, 216, Landmine::Cost);
+    btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 4));
+    UIGroup->AddNewControlObject(btn);
 }
 
 void PlayScene::UIBtnClicked(int id)
@@ -532,15 +573,22 @@ void PlayScene::UIBtnClicked(int id)
     if (id == 0 && money >= MachineGunTurret::Price)
     {
         preview = new MachineGunTurret(0, 0);
+        selectedTurretId = id;
     }
     else if (id == 1 && money >= LaserTurret::Price)
     {
         preview = new LaserTurret(0, 0);
+        selectedTurretId = id;
     }
     // Handle landmine (ID 3)
     else if (id == 3 && money >= Landmine::Cost)
     {
         preview = new Landmine(0, 0);
+    }
+    // Handle shovel ID4
+    else if (id == 4)
+    {
+        preview = new Shovel(0, 0);
     }
 
     if (!preview)
