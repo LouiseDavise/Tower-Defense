@@ -126,9 +126,13 @@ void NewPlayerScene::Draw() const
 {
     IScene::Draw(); // Draws all added UI elements
 
-    float input_x = 640 - 250;
+    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
+    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
+    int halfW = w / 2;
+
+    float input_x = halfW - 300;
     float input_y = 360 - 50;
-    float input_w = 500;
+    float input_w = halfW - 190;
     float input_h = 90;
 
     // Input box
@@ -139,6 +143,6 @@ void NewPlayerScene::Draw() const
     auto font = Engine::Resources::GetInstance().GetFont("pirulen.ttf", 28).get();
     if (font)
     {
-        al_draw_text(font, al_map_rgb(30, 30, 30), 640, input_y + 25, ALLEGRO_ALIGN_CENTER, nameInput);
+        al_draw_text(font, al_map_rgb(30, 30, 30), halfW, input_y + 25, ALLEGRO_ALIGN_CENTER, nameInput);
     }
 }
