@@ -17,8 +17,8 @@ void AuthScene::Initialize()
     bgmInstance = AudioHelper::PlaySample("select.ogg", true, AudioHelper::BGMVolume);
 
     // Title
-    AddNewObject(new Engine::Label("WELCOME TO PICHIU-RPG", "pirulen.ttf", 48, halfW, halfH / 2 - 250, 255, 255, 255, 255, 0.5, 0.5));
-    AddNewObject(new Engine::Label("Please select your option", "pirulen.ttf", 32, halfW, halfH / 2 - 190, 200, 200, 200, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("WELCOME TO TOWEL DEPEN", "pirulen.ttf", 48, halfW, halfH - 250, 255, 255, 255, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Please select your option", "pirulen.ttf", 32, halfW, halfH - 190, 160, 160, 160, 255, 0.5, 0.5));
 
     // NEW PLAYER Button
     auto *btnNew = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH - 50, 400, 100);
