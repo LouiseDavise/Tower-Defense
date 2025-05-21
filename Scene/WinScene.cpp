@@ -52,16 +52,17 @@ void WinScene::Initialize()
         std::cout << "Failed to write score to file.\n";
     }
 
-    Engine::ImageButton *backBtn;
-    backBtn = new Engine::ImageButton("win/dirt.png", "win/floor.png", halfW - 200, halfH * 7 / 4 - 50, 400, 100);
-    backBtn->SetOnClickCallback(std::bind(&WinScene::BackOnClick, this, 2));
-    AddNewControlObject(backBtn);
-    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 7 / 4, 0, 0, 0, 255, 0.5, 0.5));
-
-    Engine::ImageButton *nextBtn;
-    nextBtn = new Engine::ImageButton("win/dirt.png", "win/floor.png", halfW - 200, halfH * 7 / 4 - 170, 400, 100);
-    nextBtn->SetOnClickCallback([this]()
-                                {
+    if (scene && scene->MapId < 2)
+    {
+        Engine::ImageButton *backBtn;
+        backBtn = new Engine::ImageButton("win/dirt.png", "win/floor.png", halfW + 50, halfH * 7 / 4 - 50, 400, 100);
+        backBtn->SetOnClickCallback(std::bind(&WinScene::BackOnClick, this, 2));
+        AddNewControlObject(backBtn);
+        AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW + 250, halfH * 7 / 4, 0, 0, 0, 255, 0.5, 0.5));
+        Engine::ImageButton *nextBtn;
+        nextBtn = new Engine::ImageButton("win/dirt.png", "win/floor.png", halfW - 440, halfH * 7 / 4 - 50, 400, 100);
+        nextBtn->SetOnClickCallback([this]()
+                                    {
         PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("play"));
         if (scene && scene->MapId < 3) {
             scene->MapId++;
@@ -69,9 +70,17 @@ void WinScene::Initialize()
         } else {
             Engine::GameEngine::GetInstance().ChangeScene("stage-select");
         } });
-    AddNewControlObject(nextBtn);
-    AddNewObject(new Engine::Label("Next Stage", "pirulen.ttf", 36, halfW, halfH * 7 / 4 - 120, 0, 0, 0, 255, 0.5, 0.5));
-
+        AddNewControlObject(nextBtn);
+        AddNewObject(new Engine::Label("Next Stage", "pirulen.ttf", 36, halfW - 240, halfH * 7 / 4, 0, 0, 0, 255, 0.5, 0.5));
+    }
+    else
+    {
+        Engine::ImageButton *backBtn;
+        backBtn = new Engine::ImageButton("win/dirt.png", "win/floor.png", halfW - 200, halfH * 7 / 4 - 50, 400, 100);
+        backBtn->SetOnClickCallback(std::bind(&WinScene::BackOnClick, this, 2));
+        AddNewControlObject(backBtn);
+        AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 7 / 4, 0, 0, 0, 255, 0.5, 0.5));
+    }
     bgmId = AudioHelper::PlayAudio("win.wav");
 }
 
