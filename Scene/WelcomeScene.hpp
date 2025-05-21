@@ -16,6 +16,7 @@ private:
         std::string name;
         int score;
         std::string time;
+        std::string date;
     };
 
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;

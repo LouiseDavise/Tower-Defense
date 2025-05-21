@@ -25,11 +25,12 @@ void WelcomeScene::LoadPlayerHistory(const std::string &path, const std::string 
     while (std::getline(file, line))
     {
         std::istringstream ss(line);
-        std::string file_uid, file_name, score_str, time;
+        std::string file_uid, file_name, score_str, time, date;
         if (std::getline(ss, file_uid, ',') &&
             std::getline(ss, file_name, ',') &&
             std::getline(ss, score_str, ',') &&
-            std::getline(ss, time))
+            std::getline(ss, time, ',') &&
+            std::getline(ss, date))
         {
             if (file_uid == uid)
             {
@@ -38,6 +39,7 @@ void WelcomeScene::LoadPlayerHistory(const std::string &path, const std::string 
                 entry.name = file_name;
                 entry.score = std::stoi(score_str);
                 entry.time = time;
+                entry.date = date;
                 filteredEntries.push_back(entry);
             }
         }
@@ -60,15 +62,22 @@ void WelcomeScene::Initialize()
 
     AddNewObject(new Engine::Label(std::string("Welcome back ") + nameInput + "!", "pirulen.ttf", 48, cx, 50, 146, 161, 185, 255, 0.5, 0.5));
     AddNewObject(new Engine::Label("Take a look at your previous records", "pirulen.ttf", 24, cx, 120, 180, 180, 180, 255, 0.5, 0.5));
+    float table_left = 300;
+    float table_width = screen.x - 2 * table_left;
+    float col_gap = table_width / 3;
 
-    float col_name = screen.x / 4;
-    float col_score = screen.x / 2;
-    float col_time = 3 * screen.x / 4;
+    float col_name = table_left + col_gap * 0;
+    float col_score = table_left + col_gap * 1;
+    float col_time = table_left + col_gap * 2;
+    float col_date = table_left + col_gap * 3;
 
-    AddNewObject(new Engine::Label("Name", "pirulen.ttf", 24, col_name, 190, 255, 255, 255, 255, 0.5, 0.5));
-    AddNewObject(new Engine::Label("Score", "pirulen.ttf", 24, col_score, 190, 255, 255, 255, 255, 0.5, 0.5));
-    AddNewObject(new Engine::Label("Time", "pirulen.ttf", 24, col_time, 190, 255, 255, 255, 255, 0.5, 0.5));
+    int header_y = 200;
+    AddNewObject(new Engine::Label("Name", "pirulen.ttf", 24, col_name, header_y, 255, 255, 255, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Score", "pirulen.ttf", 24, col_score, header_y, 255, 255, 255, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Time", "pirulen.ttf", 24, col_time, header_y, 255, 255, 255, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Date", "pirulen.ttf", 24, col_date, header_y, 255, 255, 255, 255, 0.5, 0.5));
 
+    int y = header_y + 40;
     if (filteredEntries.empty())
     {
         AddNewObject(new Engine::Label("No Record Found", "pirulen.ttf", 24, cx, screen.y / 2, 255, 0, 0, 255, 0.5, 0.5));
@@ -81,6 +90,7 @@ void WelcomeScene::Initialize()
             AddNewObject(new Engine::Label(entry.name, "pirulen.ttf", 20, col_name, y, 200, 200, 200, 255, 0.5, 0.5));
             AddNewObject(new Engine::Label(std::to_string(entry.score), "pirulen.ttf", 20, col_score, y, 200, 200, 200, 255, 0.5, 0.5));
             AddNewObject(new Engine::Label(entry.time, "pirulen.ttf", 20, col_time, y, 200, 200, 200, 255, 0.5, 0.5));
+            AddNewObject(new Engine::Label(entry.date, "pirulen.ttf", 20, col_date, y, 200, 200, 200, 255, 0.5, 0.5));
             y += 40;
         }
     }
