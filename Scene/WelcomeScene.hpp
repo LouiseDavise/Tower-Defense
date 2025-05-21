@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include "Engine/IScene.hpp"
+#include "UI/Component/Label.hpp"
 
 class WelcomeScene final : public Engine::IScene
 {
@@ -26,6 +27,15 @@ private:
     void LoadPlayerHistory(const std::string &path, const std::string &uid);
 
 public:
+    int currentPage = 0;
+    const int entriesPerPage = 8;
+    std::vector<Engine::Label *> pageLabels;
+
+    void RenderPage();
+    void ClearPageLabels();
+    void OnNextClick();
+    void OnBackClick();
+
     void Initialize() override;
     void Terminate() override;
     void Draw() const override;

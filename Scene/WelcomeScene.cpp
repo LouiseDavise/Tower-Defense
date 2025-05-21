@@ -84,15 +84,7 @@ void WelcomeScene::Initialize()
     }
     else
     {
-        int y = 240;
-        for (const auto &entry : filteredEntries)
-        {
-            AddNewObject(new Engine::Label(entry.name, "pirulen.ttf", 20, col_name, y, 200, 200, 200, 255, 0.5, 0.5));
-            AddNewObject(new Engine::Label(std::to_string(entry.score), "pirulen.ttf", 20, col_score, y, 200, 200, 200, 255, 0.5, 0.5));
-            AddNewObject(new Engine::Label(entry.time, "pirulen.ttf", 20, col_time, y, 200, 200, 200, 255, 0.5, 0.5));
-            AddNewObject(new Engine::Label(entry.date, "pirulen.ttf", 20, col_date, y, 200, 200, 200, 255, 0.5, 0.5));
-            y += 40;
-        }
+        RenderPage(); // Show page 1
     }
 
     auto *btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", cx - 200, 650, 400, 100);
@@ -100,6 +92,15 @@ void WelcomeScene::Initialize()
     AddNewControlObject(btn);
     AddNewObject(btn);
     AddNewObject(new Engine::Label("CONTINUE", "pirulen.ttf", 36, cx, 700, 225, 225, 225, 255, 0.5, 0.5));
+    auto *nextBtn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", cx + 150, 570, 100, 40);
+    nextBtn->SetOnClickCallback(std::bind(&WelcomeScene::OnNextClick, this));
+    AddNewControlObject(nextBtn);
+    AddNewObject(new Engine::Label("Next", "pirulen.ttf", 20, cx + 200, 590, 0, 0, 0, 255, 0.5, 0.5));
+
+    auto *prevBtn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", cx - 250, 570, 100, 40);
+    prevBtn->SetOnClickCallback(std::bind(&WelcomeScene::OnBackClick, this));
+    AddNewControlObject(prevBtn);
+    AddNewObject(new Engine::Label("Prev", "pirulen.ttf", 20, cx - 200, 590, 0, 0, 0, 255, 0.5, 0.5));
 }
 
 void WelcomeScene::Draw() const
@@ -111,4 +112,72 @@ void WelcomeScene::Terminate()
 {
     AudioHelper::StopSample(bgmInstance);
     bgmInstance = nullptr;
+}
+
+void WelcomeScene::RenderPage()
+{
+    Engine::Point screen = Engine::GameEngine::GetInstance().GetScreenSize();
+    float table_left = 300;
+    float table_width = screen.x - 2 * table_left;
+    float col_gap = table_width / 3;
+
+    float col_name = table_left + col_gap * 0;
+    float col_score = table_left + col_gap * 1;
+    float col_time = table_left + col_gap * 2;
+    float col_date = table_left + col_gap * 3;
+
+    int start = currentPage * entriesPerPage;
+    int end = std::min(start + entriesPerPage, (int)filteredEntries.size());
+    int y = 240;
+
+    for (int i = start; i < end; i++)
+    {
+        const auto &entry = filteredEntries[i];
+        auto *nameLabel = new Engine::Label(entry.name, "pirulen.ttf", 20, col_name, y, 200, 200, 200, 255, 0.5, 0.5);
+        auto *scoreLabel = new Engine::Label(std::to_string(entry.score), "pirulen.ttf", 20, col_score, y, 200, 200, 200, 255, 0.5, 0.5);
+        auto *timeLabel = new Engine::Label(entry.time, "pirulen.ttf", 20, col_time, y, 200, 200, 200, 255, 0.5, 0.5);
+        auto *dateLabel = new Engine::Label(entry.date, "pirulen.ttf", 20, col_date, y, 200, 200, 200, 255, 0.5, 0.5);
+
+        AddNewObject(nameLabel);
+        AddNewObject(scoreLabel);
+        AddNewObject(timeLabel);
+        AddNewObject(dateLabel);
+
+        pageLabels.push_back(nameLabel);
+        pageLabels.push_back(scoreLabel);
+        pageLabels.push_back(timeLabel);
+        pageLabels.push_back(dateLabel);
+
+        y += 40;
+    }
+}
+
+void WelcomeScene::ClearPageLabels()
+{
+    for (auto *label : pageLabels)
+    {
+        RemoveObject(label->GetObjectIterator());
+    }
+    pageLabels.clear();
+}
+
+void WelcomeScene::OnNextClick()
+{
+    int maxPage = (filteredEntries.size() + entriesPerPage - 1) / entriesPerPage;
+    if (currentPage < maxPage - 1)
+    {
+        currentPage++;
+        ClearPageLabels();
+        RenderPage();
+    }
+}
+
+void WelcomeScene::OnBackClick()
+{
+    if (currentPage > 0)
+    {
+        currentPage--;
+        ClearPageLabels();
+        RenderPage();
+    }
 }
