@@ -248,7 +248,6 @@ void PlayScene::OnMouseMove(int mx, int my)
     imgTarget->Position.y = y * BlockSize;
 }
 
-
 bool PlayScene::CheckBomSpaceValid(int x, int y)
 {
     return x >= 0 && x < MapWidth && y >= 0 && y < MapHeight && mapState[y][x] == TILE_DIRT;
@@ -527,17 +526,17 @@ void PlayScene::ConstructUI()
 
     // Bom
     btn = new TurretButton("play/floor.png", "play/dirt.png",
-                           Engine::Sprite("play/tower-base.png", 1510, 136, 0, 0, 0, 0),
-                           Engine::Sprite("play/landmine.png", 1515, 136 + 4, 0, 0, 0, 0),
-                           1510, 136, Bom::Cost);
+                           Engine::Sprite("play/tower-base.png", 1445, 136, 0, 0, 0, 0),
+                           Engine::Sprite("play/landmine.png", 1445 + 4, 136 + 5, 0, 0, 0, 0),
+                           1445, 136, Bom::Cost);
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 3));
     UIGroup->AddNewControlObject(btn);
 
     // Shovel
     btn = new TurretButton("play/floor.png", "play/dirt.png",
-                           Engine::Sprite("play/tower-base.png", 1294, 216, 0, 0, 0, 0),
-                           Engine::Sprite("play/shovel.png", 1294, 216 + 4, 0, 0, 0, 0),
-                           1294, 216, 0);
+                           Engine::Sprite("play/tower-base.png", 1510, 136, 0, 0, 0, 0),
+                           Engine::Sprite("play/shovel.png", 1510 + 4, 136 + 5, 0, 0, 0, 0),
+                           1510, 136, 0);
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 4));
     UIGroup->AddNewControlObject(btn);
 }
