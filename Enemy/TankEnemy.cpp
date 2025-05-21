@@ -19,14 +19,12 @@ void TankEnemy::Update(float deltaTime)
 {
     Enemy::Update(deltaTime);
     head.Position = Position;
-    // Choose arbitrary one.
     std::random_device dev;
     std::mt19937 rng(dev());
     std::uniform_real_distribution<> dist(0.0f, 4.0f);
     float rnd = dist(rng);
     if (rnd < deltaTime)
     {
-        // Head arbitrary rotation.
         std::uniform_real_distribution<> distRadian(-ALLEGRO_PI, ALLEGRO_PI);
         targetRotation = distRadian(rng);
     }

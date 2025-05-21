@@ -89,7 +89,6 @@ public:
     void UIBtnClicked(int id);
     bool CheckSpaceValid(int x, int y);
     std::vector<std::vector<int>> CalculateBFSDistance();
-    // void ModifyReadMapTiles();
     void RemovePreviewIfMatched(Engine::IObject *obj);
     bool CheckBomSpaceValid(int x, int y);
     static TileType GetFloorTile() { return TILE_FLOOR; }

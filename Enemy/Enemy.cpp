@@ -47,7 +47,6 @@ void Enemy::Hit(float damage)
         OnExplode();
         getPlayScene()->enemiesKilled++;
         getPlayScene()->coinsEarned += money;
-        // Remove all turret's reference to target.
         for (auto &it : lockedTurrets)
             it->Target = nullptr;
         for (auto &it : lockedBullets)

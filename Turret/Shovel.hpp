@@ -12,7 +12,7 @@ public:
     Shovel(float x, float y);
 
     void Update(float deltaTime) override;
-    void OnClick(int gridX, int gridY);  // Action when shovel is used
+    void OnClick(int gridX, int gridY);
 };
 
 #endif // SHOVEL_HPP

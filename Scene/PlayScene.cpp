@@ -33,12 +33,6 @@
 #include "UI/Animation/ExplosionEffect.hpp"
 #include "Turret/Shovel.hpp"
 
-// TODO HACKATHON-4 (1/3): Trace how the game handles keyboard input.
-// TODO HACKATHON-4 (2/3): Find the cheat code sequence in this file.
-// TODO HACKATHON-4 (3/3): When the cheat code is entered, a plane should be spawned and added to the scene.
-// TODO HACKATHON-5 (1/4): There's a bug in this file, which crashes the game when you win. Try to find it.
-// TODO HACKATHON-5 (2/4): The "LIFE" label are not updated when you lose a life. Try to fix it.
-
 bool PlayScene::DebugMode = false;
 const std::vector<Engine::Point> PlayScene::directions = {Engine::Point(-1, 0), Engine::Point(0, -1), Engine::Point(1, 0), Engine::Point(0, 1)};
 const int PlayScene::MapWidth = 20, PlayScene::MapHeight = 13;
@@ -222,7 +216,6 @@ void PlayScene::Draw() const
             {
                 if (mapDistance[i][j] != -1)
                 {
-                    // Not elegant nor efficient, but it's quite enough for debugging.
                     Engine::Label label(std::to_string(mapDistance[i][j]), "pirulen.ttf", 32, (j + 0.5) * BlockSize, (i + 0.5) * BlockSize);
                     label.Anchor = Engine::Point(0.5, 0.5);
                     label.Draw();
@@ -235,7 +228,6 @@ void PlayScene::OnMouseDown(int button, int mx, int my)
 {
     if ((button & 1) && !imgTarget->Visible && preview)
     {
-        // Cancel turret construct.
         UIGroup->RemoveObject(preview->GetObjectIterator());
         preview = nullptr;
     }
@@ -255,12 +247,7 @@ void PlayScene::OnMouseMove(int mx, int my)
     imgTarget->Position.x = x * BlockSize;
     imgTarget->Position.y = y * BlockSize;
 }
-// bool PlayScene::CheckBomSpaceValid(int x, int y)
-// {
-//     if (x < 0 || x >= MapWidth || y < 0 || y >= MapHeight)
-//         return false;
-//     return mapState[y][x] == TILE_FLOOR;
-// }
+
 
 bool PlayScene::CheckBomSpaceValid(int x, int y)
 {
@@ -293,7 +280,7 @@ void PlayScene::OnMouseUp(int button, int mx, int my)
         if (!preview)
             return;
 
-        // Reject placement if already occupied (for turret) or not walkable (for Bom)
+        // Reject placement if already occupied
         if ((dynamic_cast<Turret *>(preview) && mapState[y][x] == TILE_OCCUPIED) ||
             (dynamic_cast<Bom *>(preview) && !CheckBomSpaceValid(x, y)))
         {
@@ -312,9 +299,6 @@ void PlayScene::OnMouseUp(int button, int mx, int my)
         }
 
         // Purchase
-        // if (auto *turret = dynamic_cast<Turret *>(preview))
-        //     EarnMoney(-turret->GetPrice());
-        // else
         if (dynamic_cast<Bom *>(preview))
             EarnMoney(-Bom::Cost);
 
@@ -329,9 +313,8 @@ void PlayScene::OnMouseUp(int button, int mx, int my)
         preview->Position.x = x * BlockSize + BlockSize / 2;
         preview->Position.y = y * BlockSize + BlockSize / 2;
         preview->Tint = al_map_rgba(255, 255, 255, 255);
-        preview->Update(0); // One update to initialize
+        preview->Update(0);
 
-        // Place into appropriate group
         if (auto *turret = dynamic_cast<Turret *>(preview))
         {
             int price = turret->GetPrice();
@@ -347,7 +330,6 @@ void PlayScene::OnMouseUp(int button, int mx, int my)
             case 1:
                 finalTurret = new LaserTurret(x * BlockSize + BlockSize / 2, y * BlockSize + BlockSize / 2);
                 break;
-                // Add more turret types here if needed
             }
 
             if (finalTurret)
@@ -363,12 +345,10 @@ void PlayScene::OnMouseUp(int button, int mx, int my)
         {
             mine->placed = true;
 
-            // Instantly trigger explosion
             auto *scene = this;
             scene->EffectGroup->AddNewObject(new ExplosionEffect(mine->Position.x, mine->Position.y));
             AudioHelper::PlayAudio("explosion.wav");
 
-            // Optional: damage nearby enemies if needed
             for (auto &obj : EnemyGroup->GetObjects())
             {
                 Enemy *enemy = dynamic_cast<Enemy *>(obj);
@@ -378,16 +358,13 @@ void PlayScene::OnMouseUp(int button, int mx, int my)
                 }
             }
 
-            // Remove Bom sprite immediately
             UIGroup->RemoveObject(preview->GetObjectIterator());
             preview = nullptr;
             return;
         }
 
-        // Done with preview
         preview = nullptr;
 
-        // Update targeting indicator
         OnMouseMove(mx, my);
     }
 }
@@ -556,7 +533,7 @@ void PlayScene::ConstructUI()
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 3));
     UIGroup->AddNewControlObject(btn);
 
-    // SHovel
+    // Shovel
     btn = new TurretButton("play/floor.png", "play/dirt.png",
                            Engine::Sprite("play/tower-base.png", 1294, 216, 0, 0, 0, 0),
                            Engine::Sprite("play/shovel.png", 1294, 216 + 4, 0, 0, 0, 0),
@@ -586,7 +563,7 @@ void PlayScene::UIBtnClicked(int id)
     {
         preview = new Bom(0, 0);
     }
-    // Handle shovel ID4
+    // Handle shovel (ID 4)
     else if (id == 4)
     {
         preview = new Shovel(0, 0);
@@ -595,11 +572,9 @@ void PlayScene::UIBtnClicked(int id)
     if (!preview)
         return;
 
-    // Set position & semi-transparent
     preview->Position = Engine::GameEngine::GetInstance().GetMousePosition();
     preview->Tint = al_map_rgba(255, 255, 255, 200);
 
-    // If it's a turret, set preview flags
     if (auto *turret = dynamic_cast<Turret *>(preview))
     {
         turret->Enabled = false;
@@ -636,7 +611,6 @@ bool PlayScene::CheckSpaceValid(int x, int y)
         if (map[pnt.y][pnt.x] == -1)
             return false;
     }
-    // All enemy have path to exit.
     mapState[y][x] = TILE_OCCUPIED;
     mapDistance = map;
     for (auto &it : EnemyGroup->GetObjects())

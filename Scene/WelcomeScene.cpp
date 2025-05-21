@@ -84,7 +84,7 @@ void WelcomeScene::Initialize()
     }
     else
     {
-        RenderPage(); // Show page 1
+        RenderPage();
     }
 
     auto *btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", cx - 200, 650, 400, 100);
@@ -105,7 +105,7 @@ void WelcomeScene::Initialize()
 
 void WelcomeScene::Draw() const
 {
-    IScene::Draw(); // All rendering done via AddNewObject, nothing extra to draw manually
+    IScene::Draw();
 }
 
 void WelcomeScene::Terminate()

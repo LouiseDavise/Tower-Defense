@@ -39,9 +39,9 @@ void generate_player_uid(const char *player_name, char *uid_buffer)
 
 void save_player_uid_and_name(const std::string &uid, const std::string &player_name)
 {
-    std::filesystem::create_directories("Data"); // Ensure the directory exists
+    std::filesystem::create_directories("Data"); 
 
-    std::ofstream file("Data/player_uid.txt", std::ios::app); // ✅ Append mode
+    std::ofstream file("Data/player_uid.txt", std::ios::app); 
     std::cout << "Writing to: " << std::filesystem::absolute("Data/player_uid.txt") << std::endl;
 
     if (file.is_open())
@@ -124,7 +124,7 @@ void NewPlayerScene::OnKeyDown(int keyCode)
 
 void NewPlayerScene::Draw() const
 {
-    IScene::Draw(); // Draws all added UI elements
+    IScene::Draw();
 
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
@@ -135,11 +135,9 @@ void NewPlayerScene::Draw() const
     float input_w = halfW - 190;
     float input_h = 90;
 
-    // Input box
     al_draw_filled_rounded_rectangle(input_x, input_y, input_x + input_w, input_y + input_h, 10, 10, al_map_rgb(240, 240, 240));
     al_draw_rounded_rectangle(input_x, input_y, input_x + input_w, input_y + input_h, 10, 10, al_map_rgb(50, 50, 50), 3);
 
-    // Draw nameInput text
     auto font = Engine::Resources::GetInstance().GetFont("pirulen.ttf", 28).get();
     if (font)
     {

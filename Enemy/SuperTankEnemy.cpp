@@ -20,12 +20,12 @@ void SuperTankEnemy::Hit(float damage)
 
 void SuperTankEnemy::Update(float deltaTime)
 {
-    armorOverlay.Position = Position; // Align armor overlay
-    Enemy::Update(deltaTime);         // Keep original movement/logic
+    armorOverlay.Position = Position;
+    Enemy::Update(deltaTime); 
 }
 
 void SuperTankEnemy::Draw() const
 {
-    Enemy::Draw();       // Draw tank
-    armorOverlay.Draw(); // Draw armor visual
+    Enemy::Draw();
+    armorOverlay.Draw();
 }

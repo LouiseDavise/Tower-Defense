@@ -44,7 +44,6 @@ void OldPlayerScene::Terminate()
 
 void OldPlayerScene::Update(float)
 {
-    // Nothing dynamic yet
 }
 
 void OldPlayerScene::Draw() const

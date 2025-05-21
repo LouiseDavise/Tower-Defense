@@ -20,7 +20,7 @@ void Shovel::Update(float deltaTime)
 void Shovel::OnClick(int gridX, int gridY)
 {
     auto *scene = dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetActiveScene());
-    auto &&objects = scene->TowerGroup->GetObjects(); // holds the copy
+    auto &&objects = scene->TowerGroup->GetObjects();
     for (auto *obj : objects)
     {
         Turret *turret = dynamic_cast<Turret *>(obj);

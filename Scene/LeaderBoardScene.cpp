@@ -26,7 +26,6 @@ void LeaderBoardScene::Initialize()
 
     AddNewObject(new Engine::Label("LEADERBOARD", "pirulen.ttf", 48, halfW, h / 8 + 20, 255, 255, 255, 255, 0.5, 0.5));
 
-    // Add buttons
     Engine::ImageButton *nextBtn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW + 250, halfH / 2 + 375, 100, 50);
     nextBtn->SetOnClickCallback(std::bind(&LeaderBoardScene::OnNextClick, this));
     AddNewControlObject(nextBtn);
@@ -98,7 +97,7 @@ void LeaderBoardScene::OnNextClick()
     {
         currentPage++;
         ClearPageLabels();
-        RenderPage(); // Re-render whole page (safe but simple)
+        RenderPage();
     }
 }
 
@@ -108,7 +107,7 @@ void LeaderBoardScene::OnBackClick()
     {
         currentPage--;
         ClearPageLabels();
-        RenderPage(); // Re-render whole page
+        RenderPage();
     }
 }
 

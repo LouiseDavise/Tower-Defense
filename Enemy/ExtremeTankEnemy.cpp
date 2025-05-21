@@ -19,14 +19,14 @@ ExtremeTankEnemy::ExtremeTankEnemy(int x, int y)
 void ExtremeTankEnemy::Hit(float damage)
 {
     if (hp <= 0)
-        return; // Already dying
+        return;
 
     float actualDamage = shieldActive ? damage * (0) : damage;
     hp -= actualDamage;
 
     if (hp <= 0)
     {
-        OnExplode(); // calls base explosion
+        OnExplode();
         auto *scene = getPlayScene();
         scene->enemiesKilled++;
         scene->coinsEarned += money;
