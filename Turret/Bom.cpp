@@ -25,7 +25,7 @@ void Bom::Update(float deltaTime)
         Enemy *enemy = dynamic_cast<Enemy *>(obj);
         if (enemy && Engine::Collider::IsCircleOverlap(Position, 10, enemy->Position, enemy->CollisionRadius))
         {
-            enemy->Hit(50);
+            enemy->Hit(40);
             scene->EffectGroup->AddNewObject(new Engine::Sprite("play/explosion-4.png", Position.x, Position.y));
             activated = true;
             break;

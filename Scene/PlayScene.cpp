@@ -61,7 +61,7 @@ void PlayScene::Initialize()
     ticks = 0;
     deathCountDown = -1;
     lives = 10;
-    money = 400;
+    money = 200;
     SpeedMult = 1;
     // Add groups from bottom to top.
     AddNewObject(TileMapGroup = new Group());
@@ -374,7 +374,7 @@ void PlayScene::OnMouseUp(int button, int mx, int my)
                 Enemy *enemy = dynamic_cast<Enemy *>(obj);
                 if (enemy && Engine::Collider::IsCircleOverlap(mine->Position, 10, enemy->Position, enemy->CollisionRadius))
                 {
-                    enemy->Hit(50);
+                    enemy->Hit(40);
                 }
             }
 

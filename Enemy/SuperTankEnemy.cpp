@@ -6,7 +6,7 @@
 #include "Engine/AudioHelper.hpp"
 
 SuperTankEnemy::SuperTankEnemy(int x, int y)
-    : Enemy("play/enemy-4.png", x, y, 16, 40, 30, 5),
+    : Enemy("play/enemy-4.png", x, y, 16, 40, 45, 25),
       armorOverlay("play/armor-overlay-super.png", x, y)
 {
     armorOverlay.Anchor = Anchor;

@@ -9,7 +9,7 @@
 #include "Bullet/Bullet.hpp"
 
 ExtremeTankEnemy::ExtremeTankEnemy(int x, int y)
-    : Enemy("play/enemy-5.png", x, y, 18, 30, 40, 8),
+    : Enemy("play/enemy-5.png", x, y, 18, 30, 55, 35),
       armorOverlay("play/armor-overlay-extreme.png", x, y)
 {
     armorOverlay.Anchor = Anchor;
@@ -23,11 +23,6 @@ void ExtremeTankEnemy::Hit(float damage)
 
     float actualDamage = shieldActive ? damage * (0) : damage;
     hp -= actualDamage;
-    if(shieldActive){
-        std::cout << "Activeeeee\n"; 
-    }else{
-        std::cout << "OFFF\n";
-    }
 
     if (hp <= 0)
     {

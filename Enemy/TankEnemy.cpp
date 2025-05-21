@@ -6,7 +6,7 @@
 #include "TankEnemy.hpp"
 
 TankEnemy::TankEnemy(int x, int y)
-    : Enemy("play/enemy-3.png", x, y, 14, 60, 15, 3),
+    : Enemy("play/enemy-3.png", x, y, 14, 60, 35, 15),
       head("play/enemy-3-head.png", x, y), targetRotation(0)
 {
 }
