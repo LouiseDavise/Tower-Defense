@@ -7,7 +7,7 @@
 
 SuperTankEnemy::SuperTankEnemy(int x, int y)
     : Enemy("play/enemy-4.png", x, y, 16, 40, 30, 5),
-      armorOverlay("play/armor-overlay.png", x, y)
+      armorOverlay("play/armor-overlay-super.png", x, y)
 {
     armorOverlay.Anchor = Anchor;
 }

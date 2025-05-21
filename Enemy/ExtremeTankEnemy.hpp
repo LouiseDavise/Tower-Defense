@@ -14,5 +14,6 @@ public:
     void Hit(float damage) override;
     void Update(float deltaTime) override;
     void Draw() const override;
+    bool IsTargetable() const override;
 };
 #endif // EXTREMETANKENEMY_HPP

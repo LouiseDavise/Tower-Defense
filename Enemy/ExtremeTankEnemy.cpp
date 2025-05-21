@@ -1,14 +1,16 @@
-#include <string>
+#include <iostream>
 #include "ExtremeTankEnemy.hpp"
 #include "UI/Animation/ExplosionEffect.hpp"
 #include "Engine/Collider.hpp"
 #include "Engine/GameEngine.hpp"
 #include "Scene/PlayScene.hpp"
 #include "Engine/AudioHelper.hpp"
+#include "Turret/Turret.hpp"
+#include "Bullet/Bullet.hpp"
 
 ExtremeTankEnemy::ExtremeTankEnemy(int x, int y)
     : Enemy("play/enemy-5.png", x, y, 18, 30, 40, 8),
-      armorOverlay("play/armor-overlay.png", x, y)
+      armorOverlay("play/armor-overlay-extreme.png", x, y)
 {
     armorOverlay.Anchor = Anchor;
     shieldToggleTimer = shieldToggleInterval;
@@ -16,8 +18,33 @@ ExtremeTankEnemy::ExtremeTankEnemy(int x, int y)
 
 void ExtremeTankEnemy::Hit(float damage)
 {
-    float actualDamage = shieldActive ? damage * (1.0f - damageReductionRatio) : damage;
-    Enemy::Hit(actualDamage);
+    if (hp <= 0)
+        return; // Already dying
+
+    float actualDamage = shieldActive ? damage * (0) : damage;
+    hp -= actualDamage;
+    if(shieldActive){
+        std::cout << "Activeeeee\n"; 
+    }else{
+        std::cout << "OFFF\n";
+    }
+
+    if (hp <= 0)
+    {
+        OnExplode(); // calls base explosion
+        auto *scene = getPlayScene();
+        scene->enemiesKilled++;
+        scene->coinsEarned += money;
+
+        for (auto &it : lockedTurrets)
+            it->Target = nullptr;
+        for (auto &it : lockedBullets)
+            it->Target = nullptr;
+
+        scene->EarnMoney(money);
+        scene->EnemyGroup->RemoveObject(objectIterator);
+        AudioHelper::PlayAudio("explosion.wav");
+    }
 }
 
 void ExtremeTankEnemy::Update(float deltaTime)
@@ -40,4 +67,9 @@ void ExtremeTankEnemy::Draw() const
     {
         armorOverlay.Draw();
     }
+}
+
+bool ExtremeTankEnemy::IsTargetable() const
+{
+    return !shieldActive;
 }
