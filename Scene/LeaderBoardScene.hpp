@@ -6,19 +6,23 @@
 #include <vector>
 #include <string>
 #include "Engine/IScene.hpp"
+#include "UI/Component/Label.hpp"
 
-struct LeaderboardEntry {
+struct LeaderboardEntry
+{
     std::string uid;
     std::string name;
     int score;
     std::string time;
 };
 
-class LeaderBoardScene final : public Engine::IScene {
+class LeaderBoardScene final : public Engine::IScene
+{
 private:
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
     std::vector<LeaderboardEntry> leaderboard;
-    int currentPage = 0;
+    std::vector<Engine::Label*> pageLabels;
+    int currentPage;
     const int entriesPerPage = 5;
 
     void LoadLeaderboard();
@@ -31,6 +35,10 @@ public:
     void Update(float deltaTime) override;
     void ScoreboardOnClick();
     void BackOnClick(int stage);
+    void OnNextClick();
+    void OnBackClick();
+    void RenderPage();
+    void ClearPageLabels();
 };
 
-#endif   // LEADERBOARDSCENE_HPP
+#endif // LEADERBOARDSCENE_HPP
