@@ -61,7 +61,7 @@ void PlayScene::Initialize()
     ticks = 0;
     deathCountDown = -1;
     lives = 10;
-    money = 150;
+    money = 400;
     SpeedMult = 1;
     // Add groups from bottom to top.
     AddNewObject(TileMapGroup = new Group());
@@ -296,9 +296,9 @@ void PlayScene::OnMouseUp(int button, int mx, int my)
         // Reject placement if already occupied (for turret) or not walkable (for Bom)
         if ((dynamic_cast<Turret *>(preview) && mapState[y][x] == TILE_OCCUPIED) ||
             (dynamic_cast<Bom *>(preview) && !CheckBomSpaceValid(x, y)))
-            {
+        {
             return;
-            }
+        }
 
         // Check placement validity
         if ((dynamic_cast<Turret *>(preview) && !CheckSpaceValid(x, y)) ||
@@ -312,9 +312,10 @@ void PlayScene::OnMouseUp(int button, int mx, int my)
         }
 
         // Purchase
-        if (auto *turret = dynamic_cast<Turret *>(preview))
-            EarnMoney(-turret->GetPrice());
-        else if (dynamic_cast<Bom *>(preview))
+        // if (auto *turret = dynamic_cast<Turret *>(preview))
+        //     EarnMoney(-turret->GetPrice());
+        // else
+        if (dynamic_cast<Bom *>(preview))
             EarnMoney(-Bom::Cost);
 
         // Remove preview from UI
@@ -559,7 +560,7 @@ void PlayScene::ConstructUI()
     btn = new TurretButton("play/floor.png", "play/dirt.png",
                            Engine::Sprite("play/tower-base.png", 1294, 216, 0, 0, 0, 0),
                            Engine::Sprite("play/shovel.png", 1294, 216 + 4, 0, 0, 0, 0),
-                           1294, 216, Bom::Cost);
+                           1294, 216, 0);
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 4));
     UIGroup->AddNewControlObject(btn);
 }
