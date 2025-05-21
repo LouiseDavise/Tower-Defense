@@ -11,26 +11,28 @@
 
 void OldPlayerScene::Initialize()
 {
+    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
+    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
+    int halfW = w / 2;
+
     uidInput = "";
     isInvalidUID = false;
     switch_key = false;
 
     bgmInstance = AudioHelper::PlaySample("select.ogg", true, AudioHelper::BGMVolume);
 
-    int centerX = 640;
+    AddNewObject(new Engine::Label("Enter Your UID", "pirulen.ttf", 48, halfW, 100, 255, 255, 255, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Enter your UID to access your game data.", "pirulen.ttf", 24, halfW, 160, 180, 180, 180, 255, 0.5, 0.5));
 
-    AddNewObject(new Engine::Label("Enter Your UID", "pirulen.ttf", 48, centerX, 100, 255, 255, 255, 255, 0.5, 0.5));
-    AddNewObject(new Engine::Label("Enter your UID to access your game data.", "pirulen.ttf", 24, centerX, 160, 180, 180, 180, 255, 0.5, 0.5));
-
-    auto *submit = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", centerX - 200, 520, 400, 100);
+    auto *submit = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, 520, 400, 100);
     submit->SetOnClickCallback(std::bind(&OldPlayerScene::OnSubmitClick, this, 0));
     AddNewControlObject(submit);
-    AddNewObject(new Engine::Label("NEXT", "pirulen.ttf", 36, centerX, 570, 66, 76, 110, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("NEXT", "pirulen.ttf", 36, halfW, 570, 66, 76, 110, 255, 0.5, 0.5));
 
-    auto *back = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", centerX - 200, 650, 400, 100);
+    auto *back = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, 650, 400, 100);
     back->SetOnClickCallback(std::bind(&OldPlayerScene::OnBackClick, this, 0));
     AddNewControlObject(back);
-    AddNewObject(new Engine::Label("BACK", "pirulen.ttf", 36, centerX, 700, 66, 76, 110, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("BACK", "pirulen.ttf", 36, halfW, 700, 66, 76, 110, 255, 0.5, 0.5));
 }
 
 void OldPlayerScene::Terminate()
@@ -48,10 +50,13 @@ void OldPlayerScene::Update(float)
 void OldPlayerScene::Draw() const
 {
     IScene::Draw();
+    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
+    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
+    int halfW = w / 2;
 
-    float input_x = 640 - 250;
+    float input_x = halfW - 300;
     float input_y = 360 - 50;
-    float input_w = 500;
+    float input_w = halfW - 190;
     float input_h = 90;
 
     al_draw_filled_rounded_rectangle(input_x, input_y, input_x + input_w, input_y + input_h, 10, 10, al_map_rgb(240, 240, 240));
@@ -59,11 +64,11 @@ void OldPlayerScene::Draw() const
 
     auto font = Engine::Resources::GetInstance().GetFont("pirulen.ttf", 28).get();
     if (font)
-        al_draw_text(font, al_map_rgb(30, 30, 30), 640, input_y + 25, ALLEGRO_ALIGN_CENTER, uidInput.c_str());
+        al_draw_text(font, al_map_rgb(30, 30, 30), halfW, input_y + 25, ALLEGRO_ALIGN_CENTER, uidInput.c_str());
 
     if (isInvalidUID)
     {
-        al_draw_text(font, al_map_rgb(255, 0, 0), 640, input_y + 130, ALLEGRO_ALIGN_CENTER, "Invalid UID. Please try again.");
+        al_draw_text(font, al_map_rgb(255, 0, 0), halfW, input_y + 130, ALLEGRO_ALIGN_CENTER, "Invalid UID. Please try again.");
     }
 }
 
