@@ -6,7 +6,7 @@
 class SuperTankEnemy : public Enemy
 {
 public:
-    float damageReductionRatio = 0.4f;
+    float damageReductionRatio = 0.5f;
     Engine::Sprite armorOverlay;
     SuperTankEnemy(int x, int y);
     void Hit(float damage) override;
