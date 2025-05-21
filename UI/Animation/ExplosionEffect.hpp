@@ -8,7 +8,8 @@
 
 class PlayScene;
 
-class ExplosionEffect : public Engine::Sprite {
+class ExplosionEffect : public Engine::Sprite
+{
 protected:
     PlayScene *getPlayScene();
     float timeTicks;
@@ -19,4 +20,4 @@ public:
     ExplosionEffect(float x, float y);
     void Update(float deltaTime) override;
 };
-#endif   // EXPLOSIONEFFECT_HPP
+#endif // EXPLOSIONEFFECT_HPP

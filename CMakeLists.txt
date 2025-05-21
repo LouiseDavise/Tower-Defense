@@ -27,6 +27,14 @@ add_executable(2025_I2P2_TowerDefense
     Enemy/SoldierEnemy.hpp
     Enemy/TankEnemy.cpp
     Enemy/TankEnemy.hpp
+    Enemy/SuperTankEnemy.cpp
+    Enemy/SuperTankEnemy.hpp
+    Enemy/ExtremeTankEnemy.cpp
+    Enemy/ExtremeTankEnemy.hpp
+    Enemy/PlaneEnemy.cpp
+    Enemy/PlaneEnemy.hpp
+    Turret/Landmine.cpp
+    Turret/Landmine.hpp
 
     Engine/Allegro5Exception.cpp
     Engine/Allegro5Exception.hpp
@@ -64,6 +72,18 @@ add_executable(2025_I2P2_TowerDefense
     Scene/StartScene.h
     Scene/WinScene.cpp
     Scene/WinScene.hpp
+    Scene/SettingScene.cpp
+    Scene/SettingScene.hpp
+    Scene/LeaderBoardScene.cpp
+    Scene/LeaderBoardScene.hpp
+    Scene/AuthScene.cpp
+    Scene/AuthScene.hpp
+    Scene/NewPlayerScene.cpp
+    Scene/NewPlayerScene.hpp
+    Scene/OldPlayerScene.cpp
+    Scene/OldPlayerScene.hpp
+    Scene/WelcomeScene.cpp
+    Scene/WelcomeScene.hpp
 
     Turret/LaserTurret.cpp
     Turret/LaserTurret.hpp
@@ -78,6 +98,8 @@ add_executable(2025_I2P2_TowerDefense
     UI/Animation/DirtyEffect.hpp
     UI/Animation/ExplosionEffect.cpp
     UI/Animation/ExplosionEffect.hpp
+    UI/Animation/ExplosionEffect2.cpp
+    UI/Animation/ExplosionEffect2.hpp
     UI/Animation/Plane.cpp
     UI/Animation/Plane.hpp
 
@@ -94,8 +116,8 @@ add_executable(2025_I2P2_TowerDefense
 )
 
 IF (WIN32)
-    target_include_directories(2025_I2P2_TowerDefense PUBLIC C:/allegro/include)
-    target_link_directories(2025_I2P2_TowerDefense PUBLIC C:/allegro/lib)
+    target_include_directories(2025_I2P2_TowerDefense PUBLIC C:/Application/C++/Allegro/allegro/include)
+    target_link_directories(2025_I2P2_TowerDefense PUBLIC C:/Application/C++/Allegro/allegro/lib)
     target_compile_options(2025_I2P2_TowerDefense PUBLIC ${ALLEGRO5_CFLAGS_OTHER})
     target_link_libraries(2025_I2P2_TowerDefense liballegro_monolith)
 ELSE()

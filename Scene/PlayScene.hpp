@@ -10,16 +10,19 @@
 #include "Engine/Point.hpp"
 
 class Turret;
-namespace Engine {
+namespace Engine
+{
     class Group;
     class Image;
     class Label;
     class Sprite;
-}   // namespace Engine
+} // namespace Engine
 
-class PlayScene final : public Engine::IScene {
+class PlayScene final : public Engine::IScene
+{
 private:
-    enum TileType {
+    enum TileType
+    {
         TILE_DIRT,
         TILE_FLOOR,
         TILE_OCCUPIED,
@@ -34,6 +37,9 @@ protected:
 
 public:
     static bool DebugMode;
+    int enemiesKilled = 0;
+    int coinsEarned = 0;
+    float matchTime = 0.0f;
     static const std::vector<Engine::Point> directions;
     static const int MapWidth, MapHeight;
     static const int BlockSize;
@@ -57,7 +63,7 @@ public:
     Engine::Label *UILives;
     Engine::Image *imgTarget;
     Engine::Sprite *dangerIndicator;
-    Turret *preview;
+    Engine::Sprite *preview;
     std::vector<std::vector<TileType>> mapState;
     std::vector<std::vector<int>> mapDistance;
     std::list<std::pair<int, float>> enemyWaveData;
@@ -75,6 +81,7 @@ public:
     void Hit();
     int GetMoney() const;
     void EarnMoney(int money);
+    int GetLives() const;
     void ReadMap();
     void ReadEnemyWave();
     void ConstructUI();
@@ -82,5 +89,7 @@ public:
     bool CheckSpaceValid(int x, int y);
     std::vector<std::vector<int>> CalculateBFSDistance();
     // void ModifyReadMapTiles();
+    void RemovePreviewIfMatched(Engine::IObject *obj);
+    bool CheckLandmineSpaceValid(int x, int y);
 };
-#endif   // PLAYSCENE_HPP
+#endif // PLAYSCENE_HPP
