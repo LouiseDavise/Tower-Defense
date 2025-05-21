@@ -1,9 +1,16 @@
 #ifndef SUPERTANKENEMY_HPP
 #define SUPERTANKENEMY_HPP
 #include "Enemy.hpp"
+#include "Engine/Sprite.hpp"
 
-class SuperTankEnemy2 : public Enemy {
+class SuperTankEnemy : public Enemy
+{
 public:
-    SuperTankEnemy2(int x, int y);
+    float damageReductionRatio = 0.4f;
+    Engine::Sprite armorOverlay;
+    SuperTankEnemy(int x, int y);
+    void Hit(float damage) override;
+    void Update(float deltaTime) override;
+    void Draw() const override;
 };
-#endif   // SUPERTANKENEMY_HPP
+#endif // SUPERTANKENEMY_HPP

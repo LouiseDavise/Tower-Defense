@@ -191,7 +191,7 @@ void PlayScene::Update(float deltaTime)
             EnemyGroup->AddNewObject(enemy = new TankEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
             break;
         case 4:
-            EnemyGroup->AddNewObject(enemy = new SuperTankEnemy2(SpawnCoordinate.x, SpawnCoordinate.y));
+            EnemyGroup->AddNewObject(enemy = new SuperTankEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
             break;
         case 5:
             EnemyGroup->AddNewObject(enemy = new ExtremeTankEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
