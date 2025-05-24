@@ -9,7 +9,7 @@
 #include "Bullet/Bullet.hpp"
 
 ExtremeTankEnemy::ExtremeTankEnemy(int x, int y)
-    : Enemy("play/enemy-5.png", x, y, 18, 30, 55, 35),
+    : Enemy("play/enemy-5.png", x, y, 18, 100, 55, 35),
       armorOverlay("play/armor-overlay-extreme.png", x, y)
 {
     armorOverlay.Anchor = Anchor;

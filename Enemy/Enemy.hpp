@@ -18,6 +18,7 @@ protected:
     float speed;
     float hp;
     int money;
+    bool reachedEnd = false;
     PlayScene *getPlayScene();
     virtual void OnExplode();
 

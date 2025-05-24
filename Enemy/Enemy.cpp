@@ -36,6 +36,7 @@ void Enemy::OnExplode()
 }
 Enemy::Enemy(std::string img, float x, float y, float radius, float speed, float hp, int money) : Engine::Sprite(img, x, y), speed(speed), hp(hp), money(money)
 {
+    reachedEnd = false;
     CollisionRadius = radius;
     reachEndTime = 0;
 }
@@ -105,9 +106,12 @@ void Enemy::Update(float deltaTime)
     {
         if (path.empty())
         {
-            // Reach end point.
-            Hit(hp);
-            getPlayScene()->Hit();
+            if (!reachedEnd)
+            {
+                reachedEnd = true;
+                Enemy::Hit(hp);
+                getPlayScene()->Hit();
+            }
             reachEndTime = 0;
             return;
         }
