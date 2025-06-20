@@ -72,5 +72,5 @@ A feature-rich, visually styled **Tower Defense Game** built with Allegro 5. It 
 1. Make sure **Allegro 5** is installed and linked.
 2. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/tower-defense-game.git
+   git clone https://github.com/LouiseDavise/Tower-Defense.git
    cd tower-defense-game
