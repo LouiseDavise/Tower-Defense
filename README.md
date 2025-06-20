@@ -1,6 +1,9 @@
 # 🛡️ Tower Defense Game
 
-A feature-rich, visually styled **Tower Defense Game** built with Allegro 5. It includes enemy wave systems, turret building, player authentication (new & returning), score tracking, and a stage-based progression system.
+A feature-rich, visually styled **Tower Defense Game** built with C++ and Allegro 5. It includes enemy wave systems, turret building, player authentication (new & returning), score tracking, and a stage-based progression system.
+
+🎥 **Watch Gameplay Demo**:  
+[[Gameplay Demo]](https://youtu.be/IlEgHfdVaXA)
 
 ---
 
@@ -39,13 +42,15 @@ A feature-rich, visually styled **Tower Defense Game** built with Allegro 5. It 
 ---
 
 ## 📁 Project Structure
-├── Enemy/ # Enemy type implementations (Soldier, Tank, Plane, etc.)<br>
-├── Turret/ # Turret classes (Machine Gun, Laser, Bom, etc.)<br>
-├── UI/ # UI components (buttons, labels, effects)<br>
-├── Scene/ # Game scenes (Play, Start, Auth, Win, Lose, etc.)<br>
-├── Data/ # Saved player data and leaderboard<br>
-├── Resource/ # Maps and enemy wave data<br>
-└── player_data.h # Global player data (UID, name)<br>
+
+**.** – root directory of the project<br>
+├── **Enemy/** – Enemy type implementations (Soldier, Tank, Plane, etc.)<br>
+├── **Turret/** – Turret classes (Machine Gun, Laser, Bom, etc.)<br>
+├── **UI/** – UI components (buttons, labels, effects)<br>
+├── **Scene/** – Game scenes (Play, Start, Auth, Win, Lose, etc.)<br>
+├── **Data/** – Saved player data and leaderboard<br>
+├── **Resource/** – Maps and enemy wave data<br>
+└── **player_data.h** – Global player data (UID, name)<br>
 
 ---
 
